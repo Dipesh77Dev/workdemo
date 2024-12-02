@@ -1,57 +1,26 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
 
 const Register = () => {
-  const formData = z
-    .object({
-      fname: z
-        .string()
-        .min(3, { message: 'First Name must contain atleast 3 characters' }),
-      lname: z
-        .string()
-        .min(3, { message: 'Last Name must contain atleast 3 characters' }),
-      email: z
-        .string()
-        .email({ message: 'Please enter a valid email address' }),
-      password: z
-        .string()
-        .min(8, { message: 'Password must contain atleast 8 characters' }),
-      cpass: z.string().min(8, {
-        message: 'Confirm Password must contain atleast 8 characters'
-      }),
-      phoneNo: z.string().regex(/^[0-9]{10}$/, {
-        message: 'Phone number must be exactly 10 digits'
-      })
-    })
-    .refine(data => data.password === data.cpass, {
-      path: ['cpass'],
-      message: 'Password & Confirm Password should be same'
-    })
-
-  // const form = useForm({
-  //   resolver: zodResolver(formData),
-  //   defaultValue: {
-  //     fname: '',
-  //     lname: '',
-  //     email: '',
-  //     password: '',
-  //     cpass: ''
-  //   }
-  // })
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors }
-  } = useForm({
-    resolver: zodResolver(formData)
+  const [formData, setFormData] = useState({
+    fname: '',
+    lname: '',
+    email: '',
+    password: '',
+    cpass: '',
+    phoneNo: ''
   })
 
-  const formHandler = values => {
-    console.log(values)
+  // Handle input changes
+  const handleChange = e => {
+    const { name, value } = e.target
+    setFormData({ ...formData, [name]: value })
+  }
+
+  // Handle form submission
+  const handleSubmit = e => {
+    e.preventDefault() // Prevent default form submission
+    console.log('Form Data:', formData)
   }
 
   return (
@@ -69,11 +38,7 @@ const Register = () => {
         </div>
 
         <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-          <form
-            method='POST'
-            className='space-y-6'
-            onSubmit={handleSubmit(formHandler)}
-          >
+          <form method='POST' className='space-y-6' onSubmit={handleSubmit}>
             <div>
               <label
                 htmlFor='fname'
@@ -90,9 +55,9 @@ const Register = () => {
                   autoComplete='fname'
                   placeholder='Enter your first name'
                   className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
-                  {...register('fname')}
+                  value={formData.fname}
+                  onChange={handleChange}
                 />
-                {errors.fname && <p>{errors.fname.message}</p>}
               </div>
             </div>
 
@@ -112,9 +77,9 @@ const Register = () => {
                   autoComplete='lname'
                   placeholder='Enter your last name'
                   className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
-                  {...register('lname')}
+                  value={formData.lname}
+                  onChange={handleChange}
                 />
-                {errors.lname && <p>{errors.lname.message}</p>}
               </div>
             </div>
 
@@ -134,9 +99,9 @@ const Register = () => {
                   autoComplete='email'
                   placeholder='Enter your email'
                   className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
-                  {...register('email')}
+                  value={formData.email}
+                  onChange={handleChange}
                 />
-                {errors.email && <p>{errors.email.message}</p>}
               </div>
             </div>
 
@@ -166,9 +131,9 @@ const Register = () => {
                   autoComplete='current-password'
                   placeholder='Enter your password'
                   className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
-                  {...register('password')}
+                  value={formData.password}
+                  onChange={handleChange}
                 />
-                {errors.password && <p>{errors.password.message}</p>}
               </div>
             </div>
 
@@ -190,9 +155,9 @@ const Register = () => {
                   autoComplete='cpass'
                   placeholder='Enter your confirm password'
                   className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
-                  {...register('cpass')}
+                  value={formData.cpass}
+                  onChange={handleChange}
                 />
-                {errors.cpass && <p>{errors.cpass.message}</p>}
               </div>
             </div>
 
@@ -215,9 +180,9 @@ const Register = () => {
                   // maxLength="10"
                   // inputMode="numeric"
                   className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
-                  {...register("phoneNo")}
+                  value={formData.phoneNo}
+                  onChange={handleChange}
                 />
-                 {errors.phoneNo && <p>{errors.phoneNo.message}</p>}
               </div>
             </div>
 
@@ -232,12 +197,12 @@ const Register = () => {
           </form>
 
           <p className='mt-10 text-center text-sm/6 text-gray-500'>
-            Already have an account?{' '}
+            Already have an account? -{' '}
             <a
               href='/login'
               className='font-semibold text-indigo-600 hover:text-indigo-500'
             >
-              Login Here
+              Login here
             </a>
           </p>
         </div>

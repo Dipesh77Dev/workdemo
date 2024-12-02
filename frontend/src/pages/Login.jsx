@@ -1,6 +1,29 @@
 import React from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { zodResolver } from '@hookform/resolvers/zod'
+import { useForm } from 'react-hook-form'
+import { z } from 'zod'
 
 const Login = () => {
+  const formData = z.object({
+    email: z.string().email({ message: 'Please enter a valid email address' }),
+    password: z
+      .string()
+      .min(8, { message: 'Password must contain atleast 8 characters' })
+  })
+
+  const {
+    register,
+    handleSubmit,
+    formState: { errors }
+  } = useForm({
+    resolver: zodResolver(formData)
+  })
+
+  const formHandler = values => {
+    console.log(values)
+  }
+
   return (
     <>
       <div className='flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8'>
@@ -16,7 +39,11 @@ const Login = () => {
         </div>
 
         <div className='mt-10 sm:mx-auto sm:w-full sm:max-w-sm'>
-          <form action='#' method='POST' className='space-y-6'>
+          <form
+            method='POST'
+            className='space-y-6'
+            onSubmit={handleSubmit(formHandler)}
+          >
             <div>
               <label
                 htmlFor='email'
@@ -31,9 +58,11 @@ const Login = () => {
                   type='email'
                   required
                   autoComplete='email'
-                  placeholder="Enter your email" 
+                  placeholder='Enter your email'
                   className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+                  {...register('email')}
                 />
+                {errors.email && <p>{errors.email.message}</p>}
               </div>
             </div>
 
@@ -45,14 +74,6 @@ const Login = () => {
                 >
                   Password
                 </label>
-                {/* <div className='text-sm'>
-                  <a
-                    href='#'
-                    className='font-semibold text-indigo-600 hover:text-indigo-500'
-                  >
-                    Forgot password?
-                  </a>
-                </div> */}
               </div>
               <div className='mt-2'>
                 <input
@@ -61,9 +82,11 @@ const Login = () => {
                   type='password'
                   required
                   autoComplete='current-password'
-                  placeholder="Enter your password" 
+                  placeholder='Enter your password'
                   className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
+                  {...register('password')}
                 />
+                {errors.password && <p>{errors.password.message}</p>}
               </div>
             </div>
 
@@ -78,12 +101,12 @@ const Login = () => {
           </form>
 
           <p className='mt-10 text-center text-sm/6 text-gray-500'>
-            Not a member?{' '}
+            Don't have an account?{' '}
             <a
               href='/register'
               className='font-semibold text-indigo-600 hover:text-indigo-500'
             >
-              Register Here..
+              Register Here
             </a>
           </p>
         </div>
