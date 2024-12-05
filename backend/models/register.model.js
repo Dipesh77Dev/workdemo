@@ -2,11 +2,7 @@ import mongoose from 'mongoose'
 
 const registerSchema = new mongoose.Schema(
   {
-    fname: {
-      type: String,
-      required: true
-    },
-    lname: {
+    name: {
       type: String,
       required: true
     },
@@ -16,6 +12,10 @@ const registerSchema = new mongoose.Schema(
       unique: true
     },
     password: {
+      type: String,
+      required: true
+    },
+    cpass: {
       type: String,
       required: true
     },

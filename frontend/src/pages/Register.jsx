@@ -7,12 +7,9 @@ import { z } from 'zod'
 const Register = () => {
   const formData = z
     .object({
-      fname: z
+      name: z
         .string()
-        .min(3, { message: 'First Name must contain atleast 3 characters' }),
-      lname: z
-        .string()
-        .min(3, { message: 'Last Name must contain atleast 3 characters' }),
+        .min(3, { message: 'Name must contain atleast 3 characters' }),
       email: z
         .string()
         .email({ message: 'Please enter a valid email address' }),
@@ -76,45 +73,23 @@ const Register = () => {
           >
             <div>
               <label
-                htmlFor='fname'
+                htmlFor='name'
                 className='block text-sm/6 font-medium text-gray-900'
               >
-                First Name
+                Name
               </label>
               <div className='mt-2'>
                 <input
-                  id='fname'
-                  name='fname'
+                  id='name'
+                  name='name'
                   type='text'
                   required
-                  autoComplete='fname'
-                  placeholder='Enter your first name'
+                  autoComplete='name'
+                  placeholder='Enter your name'
                   className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
-                  {...register('fname')}
+                  {...register('name')}
                 />
-                {errors.fname && <p>{errors.fname.message}</p>}
-              </div>
-            </div>
-
-            <div>
-              <label
-                htmlFor='lname'
-                className='block text-sm/6 font-medium text-gray-900'
-              >
-                Last Name
-              </label>
-              <div className='mt-2'>
-                <input
-                  id='lname'
-                  name='lname'
-                  type='text'
-                  required
-                  autoComplete='lname'
-                  placeholder='Enter your last name'
-                  className='block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6'
-                  {...register('lname')}
-                />
-                {errors.lname && <p>{errors.lname.message}</p>}
+                {errors.name && <p>{errors.name.message}</p>}
               </div>
             </div>
 
